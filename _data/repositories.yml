@@ -1,0 +1,11 @@
+#github_users:
+#  - DUPASYoann
+
+#repo_description_lines_max: 2
+
+github_repos:
+  - DUPASYoann/VECCAR
+  - jadberjawi/FMCAF
+
+kaggle_repos:
+  - https://www.kaggle.com/datasets/yoanndupas/carte-de-france-segmente https://storage.googleapis.com/kaggle-datasets-images/1217409/2033249/feab48ccde48f8c41b93faba86b0445e/dataset-cover.png

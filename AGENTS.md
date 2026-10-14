@@ -9,6 +9,8 @@ The deployed site now uses the zero-runtime-dependency Node.js generator in `scr
 - Format: `npm run format`.
 - Publish only `dist/` using `.github/workflows/deploy.yml`; do not export legacy demo content.
 - `site/content.mjs` is the source of truth. Keep FR and EN in sync and use verified personal/publication facts.
+- Research summaries, primary source URLs and studies are in `site/research.mjs`. The sensor demo is explicitly educational, not model output. Keep that distinction visible.
+- After CV content changes, run `npm run cv:pdf` and review both bilingual PDFs. The build rejects stale PDF source hashes. Current employment and the corrected internship dates were confirmed directly by the user; do not add an unconfirmed LYNRED start date.
 
 # Legacy Agent Guidelines for al-folio
 

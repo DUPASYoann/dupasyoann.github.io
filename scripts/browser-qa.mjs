@@ -22,7 +22,7 @@ page.on("response", (r) => {
 });
 const report = { responsiveChecks: 0, accessibilityChecks: 0, interactions: [], errors, violations: [] };
 try {
-  for (const route of ["/", "/fr/", "/publications/", "/fr/publications/", "/cv/", "/fr/cv/"]) {
+  for (const route of ["/", "/fr/", "/publications/", "/fr/publications/", "/cv/", "/fr/cv/", "/research/", "/fr/research/"]) {
     await page.goto(base + route);
     for (const width of [320, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
@@ -32,6 +32,7 @@ try {
     }
     for (const mode of ["light", "dark"]) {
       await page.evaluate((theme) => (document.documentElement.dataset.theme = theme), mode);
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
       report.accessibilityChecks++;
       report.violations.push(...result.violations.map((v) => ({ route, mode, id: v.id, impact: v.impact, nodes: v.nodes.map((n) => n.target) })));
@@ -90,6 +91,45 @@ try {
   await page.locator(".copy-email").click();
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), "yoann.dupas.pro@gmail.com");
   report.interactions.push("email clipboard");
+  await page.goto(base + "/fr/research/");
+  await page.locator('[data-mode-button="rgb"]').click();
+  assert.equal(await page.locator(".perception-demo").getAttribute("data-mode"), "rgb");
+  assert.equal(await page.locator("#sensor-mix").isDisabled(), true);
+  await page.locator("#scene-condition").selectOption("night");
+  assert.equal(await page.locator(".perception-demo").getAttribute("data-condition"), "night");
+  await page.locator('[data-mode-button="ir"]').click();
+  assert.equal(await page.locator('[data-mode-button="ir"]').getAttribute("aria-pressed"), "true");
+  await page.locator('[data-mode-button="lidar"]').click();
+  assert.equal(await page.locator(".perception-demo").getAttribute("data-mode"), "lidar");
+  await page.locator('[data-mode-button="fusion"]').click();
+  await page.locator("#sensor-mix").focus();
+  await page.keyboard.press("End");
+  assert.equal(await page.locator("#mix-value").textContent(), "100 %");
+  assert.equal(await page.locator(".perception-demo").evaluate((el) => el.style.getPropertyValue("--ir-mix")), "1");
+  await page.locator("#show-annotations").uncheck();
+  assert.ok(await page.locator(".perception-demo").evaluate((el) => el.classList.contains("annotations-off")));
+  await page.locator("#scene-condition").selectOption("fog");
+  assert.equal(await page.locator(".perception-demo").getAttribute("data-condition"), "fog");
+  await page.locator("#show-annotations").check();
+  await page.locator("#sensor-mix").focus();
+  await page.keyboard.press("Home");
+  assert.equal(await page.locator("#mix-value").textContent(), "0 %");
+  await page.locator("#scene-condition").selectOption("day");
+  await page.locator("#sensor-mix").focus();
+  await page.keyboard.press("ArrowRight");
+  await page.locator("#sensor-mix").evaluate((el) => el.blur());
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.screenshot({ path: "test-results/research-desktop.png", fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: "test-results/research-mobile.png", fullPage: true });
+  report.interactions.push("sensor modalities, day/night/fog conditions, blend via keyboard, annotations");
+  for (const lang of ["fr", "en"]) {
+    const pdf = await page.request.get(base + `/assets/yoann-dupas-cv-${lang}.pdf`);
+    assert.equal(pdf.status(), 200);
+    assert.ok(pdf.headers()["content-type"].includes("application/pdf"));
+    assert.equal((await pdf.body()).subarray(0, 4).toString(), "%PDF");
+  }
+  report.interactions.push("direct bilingual PDF downloads");
   const notFound = await page.goto(base + "/missing-page");
   assert.equal(notFound.status(), 404);
   report.interactions.push("404 response");

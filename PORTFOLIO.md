@@ -24,15 +24,32 @@ Pour les tests navigateur et d’accessibilité, laisser tourner la prévisualis
 ## Modifier le contenu
 
 - `site/content.mjs` : profil, liens, publications, expériences et textes anglais/français. C’est la source de vérité du nouveau site.
+- `site/research.mjs` : résumés éditoriaux, DOI et liens vérifiés, études de cas et textes de la démonstration.
+- `site/research-components.mjs` : schémas SVG originaux et composants de la page recherche.
 - `site/style.css` : design, responsive, thèmes clair/sombre et impression du CV.
 - `site/app.js` : navigation mobile, préférence de thème, recherche et filtres, citations et copie d’e-mail.
 - `scripts/build.mjs` : pages HTML, métadonnées, données structurées, sitemap, bibliographie et redirections.
 - `assets/img/photo_de_profil.jpg` : portrait original.
 - `site/social-card.png` : aperçu pour le partage sur les réseaux.
 
-Les cinq références bibliographiques du dépôt original sont conservées. Pour ajouter une référence, renseigner les informations vérifiées dans `publications` ; le générateur met à jour les deux langues et le fichier BibTeX. Les champs DOI, résumé, PDF et nombre de citations ne sont pas inventés. Les dates d’expériences ont été conservées, y compris le chevauchement WiseBIM 2021–2022 : à confirmer avant publication si nécessaire.
+Les cinq références bibliographiques du dépôt original sont conservées. Les métadonnées complémentaires et résumés sont dans `site/research.mjs`. Le générateur met à jour les deux langues et le fichier BibTeX, y compris les DOI. Les dates ont été corrigées avec les indications du propriétaire : stage de fin d’études WiseBIM de mars à août 2021, poste actuel d’ingénieur algorithme & IA en CDI chez LYNRED. Aucune date de début chez LYNRED n’est inventée : le parcours indique simplement « Aujourd’hui » / « Present ».
 
-Le CV est une vraie page HTML imprimable : utiliser « Imprimer / enregistrer en PDF ». Aucun lien vers le PDF de démonstration de l’ancien thème n’est affiché.
+Le CV est une page HTML imprimable et dispose de téléchargements PDF français et anglais, stockés dans `site/downloads/`. Pour régénérer les deux fichiers après une modification : `npm run cv:pdf` (après `npm ci` et installation du navigateur si nécessaire). Cette commande utilise le contenu et les styles du site, lance son propre serveur éphémère puis l’arrête. Un manifeste de hachage permet au build de refuser les PDF dont le contenu n’est plus à jour. Après une modification de la mise en page d’impression, régénérer aussi les PDF et les contrôler visuellement.
+
+## Recherche et sources
+
+Les études de cas sont disponibles sous `/research/` et `/fr/research/`. La démonstration est un SVG pédagogique original : aucun modèle n’est exécuté, les annotations sont dessinées et aucun score de détection n’est simulé. La superposition RGB / IR ne prétend pas reproduire MEFA. Elle fonctionne au clavier et propose quatre modalités, trois conditions de visibilité, un réglage de mélange et des annotations facultatives.
+
+L’étude MEFA inclut aussi la figure 5 publiée dans l’article original (p. 616), avec ses images et légendes conservées. Il s’agit des résultats qualitatifs du papier, distincts du schéma interactif. La figure est attribuée aux auteurs, liée à sa source et accompagnée de la licence CC BY-NC-ND 4.0. Elle est chargée à la demande et s’ouvre en grand pour lire les annotations.
+
+Sources primaires vérifiées le 14 octobre 2026 :
+
+- MEFA : [article SCITEPRESS](https://www.scitepress.org/Papers/2025/132360/132360.pdf), [HAL](https://hal.science/hal-05010469), DOI `10.5220/0013236000003912`.
+- MEFA-MS : [notice et résumé HAL](https://hal.science/hal-05368360), [métadonnées HAL](https://api.archives-ouvertes.fr/search/?q=halId_s:hal-05368360&fl=title_s,abstract_s,fileMain_s&wt=json). Le temps d’inférence réduit de 50 % est rapporté par les auteurs pour DENSE + RT-DETR face à MEFA. Le DOI est également répertorié dans la [bibliographie de Christophe Cérin](https://lipn.univ-paris13.fr/~cerin/cerin.pdf).
+- FMCAF : [article CVF](https://openaccess.thecvf.com/content/ICCV2025W/MIRA/papers/Berjawi_Towards_a_Generalizable_Fusion_Architecture_for_Multimodal_Object_Detection_ICCVW_2025_paper.pdf), [arXiv](https://arxiv.org/abs/2510.17078). La conférence est précisée comme ICCV Workshops / MIRA.
+- Empreinte énergétique : [notice de l’éditeur RNTI](https://editions-rnti.fr/?inprocid=1002941).
+
+Les résumés sont des reformulations bilingues, pas des copies d’abstracts. Les rôles « premier auteur » et « coauteur » reflètent l’ordre des auteurs ; ils n’inventent pas de répartition individuelle du travail. Aucun dépôt de code propre à ces articles n’a été confirmé : aucun lien de code n’est ajouté.
 
 ## GitHub Pages
 

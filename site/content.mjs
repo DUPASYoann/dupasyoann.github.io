@@ -1,3 +1,5 @@
+import { enrichment } from "./research.mjs";
+
 export const profile = {
   name: "Yoann Dupas",
   email: "yoann.dupas.pro@gmail.com",
@@ -65,9 +67,11 @@ export const publications = [
   },
 ];
 
+for (const paper of publications) Object.assign(paper, enrichment[paper.id]);
+
 export const copy = {
   en: {
-    role: "Computer vision engineer & researcher",
+    role: "Algorithm & AI engineer at LYNRED",
     description:
       "Yoann Dupas — engineer and researcher in computer vision, multimodal fusion and deep learning. Research, publications and experience.",
     nav: ["Research", "Publications", "Experience", "About"],
@@ -135,6 +139,7 @@ export const copy = {
     education: "Education",
     experience: "Experience",
     jobs: [
+      ["Present", "Algorithm & AI engineer · Permanent role", "LYNRED", "Computer vision, algorithms and artificial intelligence."],
       [
         "2022 — 2026",
         "Doctoral research · CIFRE",
@@ -143,8 +148,8 @@ export const copy = {
       ],
       ["2021 — 2022", "Research & development engineer", "WiseBIM · Chambéry", "Research and development of document recognition solutions."],
       [
-        "2021 — 2022",
-        "Deep learning internship",
+        "Mar — Aug 2021",
+        "Final-year engineering internship · Deep learning",
         "WiseBIM · Chambéry",
         "CNN development with Keras and TensorFlow; creation and annotation of training datasets.",
       ],
@@ -167,7 +172,7 @@ export const copy = {
     hobbies: ["Hiking", "Climbing", "FPV drones", "Cooking", "Video games"],
     contactEyebrow: "LET’S CONNECT",
     contactTitle: "An idea worth<br><em>exploring together?</em>",
-    contactText: "For research discussions, engineering projects or a conversation about computer vision.",
+    contactText: "For scientific and technical discussions about computer vision and multimodal perception.",
     email: "Send me an email",
     copyEmail: "Copy email address",
     footer: "Computer vision. Deep learning. A curious mind.",
@@ -183,7 +188,7 @@ export const copy = {
     notFoundText: "The page may have moved. Explore my research or head back to the homepage.",
   },
   fr: {
-    role: "Ingénieur & chercheur en vision par ordinateur",
+    role: "Ingénieur algorithme & IA chez LYNRED",
     description:
       "Yoann Dupas — ingénieur et chercheur en vision par ordinateur, fusion multimodale et deep learning. Recherche, publications et parcours.",
     nav: ["Recherche", "Publications", "Parcours", "À propos"],
@@ -252,6 +257,7 @@ export const copy = {
     education: "Formation",
     experience: "Expérience",
     jobs: [
+      ["Aujourd’hui", "Ingénieur algorithme & IA · CDI", "LYNRED", "Vision par ordinateur, algorithmique et intelligence artificielle."],
       [
         "2022 — 2026",
         "Recherche doctorale · CIFRE",
@@ -265,8 +271,8 @@ export const copy = {
         "Recherche et développement de solutions de reconnaissance de documents.",
       ],
       [
-        "2021 — 2022",
-        "Stage en deep learning",
+        "Mars — août 2021",
+        "Stage de fin d’études d’ingénieur · Deep learning",
         "WiseBIM · Chambéry",
         "Développement de CNN avec Keras et TensorFlow ; création et annotation de bases d’apprentissage.",
       ],
@@ -289,7 +295,7 @@ export const copy = {
     hobbies: ["Randonnée", "Escalade", "Drones FPV", "Cuisine", "Jeux vidéo"],
     contactEyebrow: "PRENONS CONTACT",
     contactTitle: "Une idée à<br><em>explorer ensemble ?</em>",
-    contactText: "Pour échanger sur la recherche, un projet d’ingénierie ou la vision par ordinateur.",
+    contactText: "Pour des échanges scientifiques et techniques sur la vision par ordinateur et la perception multimodale.",
     email: "M’écrire",
     copyEmail: "Copier l’adresse e-mail",
     footer: "Vision par ordinateur. Deep learning. Curiosité.",

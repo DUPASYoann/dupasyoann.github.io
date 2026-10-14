@@ -147,3 +147,30 @@ else
   langLink.addEventListener("click", () => {
     langLink.hash = location.hash;
   });
+
+const demo = $(".perception-demo");
+if (demo) {
+  const explanations = JSON.parse($("#demo-copy").textContent);
+  const modes = ["rgb", "ir", "lidar", "fusion"];
+  const mix = $("#sensor-mix");
+  for (const button of demo.querySelectorAll("[data-mode-button]"))
+    button.addEventListener("click", () => {
+      const mode = button.dataset.modeButton;
+      demo.dataset.mode = mode;
+      for (const option of demo.querySelectorAll("[data-mode-button]")) option.setAttribute("aria-pressed", String(option === button));
+      $("#sensor-explanation").textContent = explanations[modes.indexOf(mode)];
+      $(".scene-label").textContent = mode === "fusion" ? "RGB + IR" : button.textContent;
+      mix.disabled = mode !== "fusion";
+      demo.querySelector(".mix-setting").classList.toggle("inactive", mode !== "fusion");
+    });
+  $("#scene-condition").addEventListener("change", (event) => {
+    demo.dataset.condition = event.target.value;
+  });
+  mix.addEventListener("input", () => {
+    demo.style.setProperty("--ir-mix", Number(mix.value) / 100);
+    $("#mix-value").value = `${mix.value} %`;
+  });
+  $("#show-annotations").addEventListener("change", (event) => {
+    demo.classList.toggle("annotations-off", !event.target.checked);
+  });
+}

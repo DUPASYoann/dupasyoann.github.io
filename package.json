@@ -1,6 +1,19 @@
 {
+  "name": "yoann-dupas-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node scripts/browser-qa.mjs",
+    "format": "prettier site scripts tests package.json PORTFOLIO.md README.md AGENTS.md .github/workflows/deploy.yml .github/workflows/prettier.yml .github/workflows/axe.yml --write"
+  },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "playwright": "^1.64.1",
     "prettier": "^3.8.0"
   }
 }

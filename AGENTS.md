@@ -1,4 +1,16 @@
-# Agent Guidelines for al-folio
+# Current portfolio (supersedes the legacy theme instructions below)
+
+The deployed site now uses the zero-runtime-dependency Node.js generator in `scripts/build.mjs`, bilingual data in `site/content.mjs`, and native HTML/CSS/JavaScript. Read `PORTFOLIO.md` for the current architecture. The al-folio sources are preserved for reference and are no longer built or published. Do not use Docker/Jekyll for the new portfolio.
+
+- Build: `npm run build` (Node.js 22+, no dependency installation required).
+- Content/link tests: `npm test`.
+- Preview: `npm run dev` at `http://127.0.0.1:8080` (restart after edits).
+- Browser/accessibility tests: `npm ci`, install Playwright Chromium, then `npm run test:browser` with preview running. Windows uses installed Edge by default; other platforms use Chromium. Set `BROWSER_CHANNEL` to override.
+- Format: `npm run format`.
+- Publish only `dist/` using `.github/workflows/deploy.yml`; do not export legacy demo content.
+- `site/content.mjs` is the source of truth. Keep FR and EN in sync and use verified personal/publication facts.
+
+# Legacy Agent Guidelines for al-folio
 
 A simple, clean, and responsive Jekyll theme for academics.
 

@@ -1148,9 +1148,6 @@ dialog::backdrop {
     grid-template-columns: 1fr;
     gap: 35px;
   }
-  .experience-heading h2 br {
-    display: none;
-  }
   .experience-heading .text-link {
     margin-top: 15px;
   }

@@ -8,7 +8,7 @@ const text = {
   fr: {
     hello: "Bonjour, moi c’est Yoann.",
     intro:
-      "Je suis ingénieur algorithme & IA chez LYNRED, à Chambéry. J’associe vision par ordinateur, deep learning et perception multimodale pour mieux comprendre les images.",
+      "Je suis ingénieur algorithme & IA chez LYNRED, à Grenoble. J’associe vision par ordinateur, deep learning et perception multimodale pour mieux comprendre les images.",
     second:
       "Mon parcours relie recherche doctorale et ingénierie appliquée. Vous trouverez ici mes expériences, mes compétences et mes publications.",
     cv: "Télécharger mon CV",
@@ -29,7 +29,7 @@ const text = {
     firstAuthor: "Premier auteur",
     coauthor: "Coauteur",
     read: "Lire l’article",
-    place: "Chambéry, France",
+    place: "Grenoble, France",
     portrait: "Yoann Dupas",
     degrees: "Diplômes et formation",
     tools: "Outils et méthodes",
@@ -39,7 +39,7 @@ const text = {
   en: {
     hello: "Hello, I’m Yoann.",
     intro:
-      "I’m an algorithm & AI engineer at LYNRED, based in Chambéry, France. I bring together computer vision, deep learning and multimodal perception to better understand images.",
+      "I’m an algorithm & AI engineer at LYNRED, based in Grenoble, France. I bring together computer vision, deep learning and multimodal perception to better understand images.",
     second: "My background connects doctoral research with applied engineering. Here you’ll find my experience, skills and publications.",
     cv: "Download my CV",
     journey: "My experience.",
@@ -59,7 +59,7 @@ const text = {
     firstAuthor: "First author",
     coauthor: "Coauthor",
     read: "Read paper",
-    place: "Chambéry, France",
+    place: "Grenoble, France",
     portrait: "Yoann Dupas",
     degrees: "Degrees and education",
     tools: "Tools and methods",

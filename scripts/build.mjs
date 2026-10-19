@@ -81,8 +81,8 @@ function document(lang, page = "") {
     research: `${c.nav[0]} — Yoann Dupas`,
     404: `404 — Yoann Dupas`,
   };
-  const navLabels = lang === "fr" ? ["À propos", "Parcours", "Publications", "Recherche"] : ["About", "Experience", "Publications", "Research"];
-  const navTargets = [`${homeUrl}#about`, url(lang, "cv"), url(lang, "publications"), url(lang, "research")];
+  const navLabels = lang === "fr" ? ["À propos", "Parcours", "Publications"] : ["About", "Experience", "Publications"];
+  const navTargets = [`${homeUrl}#about`, url(lang, "cv"), url(lang, "publications")];
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",

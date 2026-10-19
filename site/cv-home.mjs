@@ -22,10 +22,8 @@ const text = {
     education: "Ma formation.",
     selected: "Un aperçu de mes recherches.",
     selectedNote: "Deux articles et une thèse sur la fusion des images et la perception multimodale.",
-    publication: "Publications choisies.",
     allPublications: "Toutes les publications",
     beyond: "Un peu plus sur moi.",
-    research: "Découvrir la recherche",
     firstAuthor: "Premier auteur",
     coauthor: "Coauteur",
     read: "Lire l’article",
@@ -52,10 +50,8 @@ const text = {
     education: "My education.",
     selected: "A look at my research.",
     selectedNote: "Two papers and a thesis on image fusion and multimodal perception.",
-    publication: "Selected publications.",
     allPublications: "All publications",
     beyond: "A little more about me.",
-    research: "Explore the research",
     firstAuthor: "First author",
     coauthor: "Coauthor",
     read: "Read paper",
@@ -87,7 +83,7 @@ export function cvHome(lang, { timeline, contact }) {
       .map((study) => ({
         title: study.title,
         subtitle: study[lang].subtitle,
-        href: `${base(lang)}research/#${study.id}`,
+        href: `${base(lang)}publications/#${study.paper}`,
         label: study.first ? t.firstAuthor : t.coauthor,
       })),
     {
@@ -104,14 +100,6 @@ export function cvHome(lang, { timeline, contact }) {
   <section class="resume-section" id="experience"><div class="editorial-heading"><h2>${t.journey}</h2></div><div class="profile-grid"><article class="current-role-panel"><p class="panel-label">${t.current}</p><h3>${t.role}</h3><p class="current-employer">${t.employment}</p><p class="current-description">${lang === "fr" ? "Vision par ordinateur, deep learning et perception multimodale." : "Computer vision, deep learning and multimodal perception."}</p><p class="current-location">${t.place}</p></article><figure class="profile-photo"><img src="/assets/portrait.jpg" alt="${c.portrait}" width="524" height="516" fetchpriority="high"><figcaption>${profile.name}</figcaption></figure></div><div class="experience-content"><h3>${t.previous}</h3>${timeline(c.jobs.slice(1))}</div><a class="text-link" href="${base(lang)}cv/">${t.fullCv} <span aria-hidden="true">↗</span></a></section>
   <section class="resume-section" id="skills"><div class="editorial-heading"><h2>${t.expertise}</h2></div><div class="expertise-grid">${skills.map(([, tools], i) => `<article class="expertise-panel expertise-${i}"><span class="expertise-index" aria-hidden="true">0${i + 1}</span><h3>${headings[i]}</h3><p>${tools}</p></article>`).join("")}</div></section>
   <section class="resume-section education-section"><div class="editorial-heading"><h2>${t.education}</h2></div><div class="education-grid">${c.schools.map(([dates, title, institution]) => `<article><p class="panel-label">${dates}</p><h3>${title}</h3><p>${institution}</p></article>`).join("")}</div></section>
-  <section class="resume-section home-research" id="research"><div class="editorial-heading"><h2>${t.selected}</h2><p>${t.selectedNote}</p></div><div class="visual-work-grid">${featuredWorks.map((work, index) => `<article class="visual-work"><a href="${esc(work.href)}" class="work-cover work-cover-${index}" aria-label="${esc(work.title + " — " + work.subtitle)}">${art(index)}<span class="cover-name">${esc(work.title)}</span></a><div class="work-caption"><h3><a href="${esc(work.href)}">${esc(work.title)}</a></h3><p>${esc(work.subtitle)}</p><span>${work.label}</span></div></article>`).join("")}</div><a class="text-link" href="${base(lang)}research/">${t.research} <span aria-hidden="true">↗</span></a></section>
-  <section class="resume-section home-publications" id="publications"><div class="editorial-heading"><h2>${t.publication}</h2><a class="text-link" href="${base(lang)}publications/">${t.allPublications} ↗</a></div>${publications
-    .filter((p) => p.type !== "thesis")
-    .slice(0, 3)
-    .map(
-      (p) =>
-        `<article class="home-paper"><p class="panel-label">${p.year} · ${esc(p.venue)}</p><h3><a href="${base(lang)}publications/#${p.id}">${esc(p.title)}</a></h3><p>${esc(p.authors)}</p></article>`
-    )
-    .join("")}</section>
+  <section class="resume-section home-research" id="research"><div class="editorial-heading"><h2>${t.selected}</h2><p>${t.selectedNote}</p></div><div class="visual-work-grid">${featuredWorks.map((work, index) => `<article class="visual-work"><a href="${esc(work.href)}" class="work-cover work-cover-${index}" aria-label="${esc(work.title + " — " + work.subtitle)}">${art(index)}<span class="cover-name">${esc(work.title)}</span></a><div class="work-caption"><h3><a href="${esc(work.href)}">${esc(work.title)}</a></h3><p>${esc(work.subtitle)}</p><span>${work.label}</span></div></article>`).join("")}</div><a class="text-link" href="${base(lang)}publications/">${t.allPublications} <span aria-hidden="true">↗</span></a></section>
   <section class="resume-section beyond-section"><h2>${t.beyond}</h2><p>${c.aboutText}</p><ul class="hobbies">${c.hobbies.map((h) => `<li>${h}</li>`).join("")}</ul></section>${contact(lang)}`;
 }

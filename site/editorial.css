@@ -322,6 +322,42 @@ main,
   margin: 9px 0;
   color: var(--accent);
 }
+.timeline-organization {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 14px 0;
+}
+.timeline-organization .organization {
+  margin: 0;
+  flex: 1 1 200px;
+}
+.employer-logos {
+  display: flex;
+  gap: 8px;
+}
+.employer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 56px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #e2e6ec;
+  border-radius: 4px;
+}
+.employer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.employer-logo img[src$="orange.svg"] {
+  width: 52px;
+  height: 52px;
+  max-width: none;
+}
 .timeline-description {
   font-size: 14px;
   line-height: 1.85;

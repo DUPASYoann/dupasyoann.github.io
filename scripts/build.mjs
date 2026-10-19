@@ -46,23 +46,33 @@ function publicationList(lang, items = publications, rich = true) {
   return `<div class="publication-list">${items.map((p) => `<article id="${p.id}" class="publication" data-year="${p.year}" data-search="${escape(`${p.title} ${p.authors} ${p.venue} ${p.summary?.[lang] || ""}`)}"><div class="pub-year">${p.year}</div><div class="pub-body"><p class="pub-venue">${escape(p.venue)} <span> / ${p.type === "thesis" ? c.thesis : c.conference}</span></p><h3>${escape(p.title)}</h3><p class="pub-authors">${escape(p.authors).replace("Yoann Dupas", "<strong>Yoann Dupas</strong>")}</p>${rich && p.summary ? `<p class="pub-summary">${escape(p.summary[lang])}</p><p class="pub-contribution"><strong>${r.contribution} :</strong> ${escape(p.contribution[lang])}</p>` : ""}<div class="pub-actions"><button type="button" class="text-link cite-button" data-cite="${p.id}" aria-label="${c.cite}: ${escape(p.title)}">${c.cite} <span aria-hidden="true">{ }</span></button>${p.pdf ? external(p.pdf, r.pdf, "text-link") : ""}${p.doi ? external(`https://doi.org/${p.doi}`, "DOI", "text-link") : ""}${p.url ? external(p.url, p.type === "thesis" ? c.record : r.record, "text-link") : ""}${rich && p.study ? `<a class="text-link" href="${url(lang, "research")}#${p.study}">${r.readStudy} ↗</a>` : ""}</div></div></article>`).join("")}</div>`;
 }
 
+const organizations = [
+  { name: "LYNRED", file: "lynred.svg", url: "https://www.lynred.com/" },
+  { name: "Orange", file: "orange.svg", url: "https://www.orange.com/" },
+  { name: "Laboratoire d’Informatique de Grenoble", file: "lig.svg", url: "https://www.liglab.fr/" },
+  { name: "WiseBIM", file: "wisebim.png", url: "https://wisebim.fr/" },
+  { name: "I3S", file: "i3s.webp", url: "https://www.i3s.unice.fr/" },
+];
+
+function organizationLinks(org) {
+  return org
+    .split(/(LYNRED|Orange|Laboratoire d’Informatique de Grenoble|WiseBIM|I3S)/)
+    .map((part) => {
+      const organization = organizations.find(({ name }) => name === part);
+      return organization ? external(organization.url, escape(part)) : escape(part);
+    })
+    .join("");
+}
+
 function employerLogos(org) {
-  const logos = org.startsWith("Orange")
-    ? ["orange.svg", "lig.svg"]
-    : org.startsWith("WiseBIM")
-      ? ["wisebim.png"]
-      : org.startsWith("I3S")
-        ? ["i3s.webp"]
-        : org.startsWith("LYNRED")
-          ? ["lynred.svg"]
-          : [];
+  const logos = organizations.filter(({ name }) => org.includes(name));
   return logos.length
-    ? `<div class="employer-logos" aria-hidden="true">${logos.map((file) => `<span class="employer-logo"><img src="/assets/logos/${file}" alt="" loading="lazy" width="80" height="56"></span>`).join("")}</div>`
+    ? `<div class="employer-logos">${logos.map(({ name, file, url }) => `<a class="employer-logo" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${escape(name)}"><img src="/assets/logos/${file}" alt="" loading="lazy" width="80" height="56"></a>`).join("")}</div>`
     : "";
 }
 
 function timeline(items, { logos = false } = {}) {
-  return `<div class="timeline">${items.map(([date, title, org, text]) => `<article class="timeline-item"><p class="date">${escape(date)}</p><div><h3>${escape(title)}</h3><div class="timeline-organization">${logos ? employerLogos(org) : ""}<p class="organization">${escape(org)}</p></div>${text ? `<p class="timeline-description">${escape(text)}</p>` : ""}</div></article>`).join("")}</div>`;
+  return `<div class="timeline">${items.map(([date, title, org, text]) => `<article class="timeline-item"><p class="date">${escape(date)}</p><div><h3>${escape(title)}</h3><div class="timeline-organization">${logos ? employerLogos(org) : ""}<p class="organization">${organizationLinks(org)}</p></div>${text ? `<p class="timeline-description">${escape(text)}</p>` : ""}</div></article>`).join("")}</div>`;
 }
 
 function contact(lang) {
@@ -71,7 +81,7 @@ function contact(lang) {
 }
 
 function home(lang) {
-  return cvHome(lang, { timeline, contact });
+  return cvHome(lang, { timeline, contact, organizationLinks });
 }
 
 function papers(lang) {

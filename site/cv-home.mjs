@@ -13,7 +13,6 @@ const text = {
       "Mon parcours relie recherche doctorale et ingénierie appliquée. Vous trouverez ici mes expériences, mes compétences et mes publications.",
     cv: "Télécharger mon CV",
     journey: "Mon parcours.",
-    journeyNote: "De la recherche à l’ingénierie, un même fil conducteur : la vision par ordinateur.",
     previous: "Expériences précédentes",
     fullCv: "Voir le parcours complet",
     current: "Aujourd’hui",
@@ -44,7 +43,6 @@ const text = {
     second: "My background connects doctoral research with applied engineering. Here you’ll find my experience, skills and publications.",
     cv: "Download my CV",
     journey: "My experience.",
-    journeyNote: "From research to engineering, with computer vision as the common thread.",
     previous: "Previous experience",
     fullCv: "View my full background",
     current: "Today",
@@ -84,7 +82,7 @@ export function cvHome(lang, { timeline, contact }) {
     c = copy[lang];
   const headings = lang === "fr" ? ["Deep learning", "Vision par ordinateur", "Développement"] : ["Deep learning", "Computer vision", "Engineering"];
   return `<section class="cv-welcome" id="about"><p class="welcome-label">${esc(profile.location)}</p><h1>${t.hello}</h1><p class="welcome-intro">${t.intro}</p><p class="welcome-second">${t.second}</p><div class="welcome-actions"><a class="button button-dark" href="/assets/yoann-dupas-cv-${lang}.pdf" download>${t.cv} <span aria-hidden="true">↓</span></a><a class="text-link" href="#experience">${t.journey.replace(".", "")} <span aria-hidden="true">↓</span></a></div></section>
-  <section class="resume-section" id="experience"><div class="editorial-heading"><h2>${t.journey}</h2><p>${t.journeyNote}</p></div><div class="profile-grid"><article class="current-role-panel"><p class="panel-label">${t.current}</p><h3>${t.role}</h3><p class="current-employer">${t.employment}</p><p class="current-description">${lang === "fr" ? "Vision par ordinateur, deep learning et perception multimodale." : "Computer vision, deep learning and multimodal perception."}</p><p class="current-location">${t.place}</p></article><figure class="profile-photo"><img src="/assets/portrait.jpg" alt="${c.portrait}" width="524" height="516" fetchpriority="high"><figcaption>${profile.name}</figcaption></figure></div><div class="experience-content"><h3>${t.previous}</h3>${timeline(c.jobs.slice(1))}</div><a class="text-link" href="${base(lang)}cv/">${t.fullCv} <span aria-hidden="true">↗</span></a></section>
+  <section class="resume-section" id="experience"><div class="editorial-heading"><h2>${t.journey}</h2></div><div class="profile-grid"><article class="current-role-panel"><p class="panel-label">${t.current}</p><h3>${t.role}</h3><p class="current-employer">${t.employment}</p><p class="current-description">${lang === "fr" ? "Vision par ordinateur, deep learning et perception multimodale." : "Computer vision, deep learning and multimodal perception."}</p><p class="current-location">${t.place}</p></article><figure class="profile-photo"><img src="/assets/portrait.jpg" alt="${c.portrait}" width="524" height="516" fetchpriority="high"><figcaption>${profile.name}</figcaption></figure></div><div class="experience-content"><h3>${t.previous}</h3>${timeline(c.jobs.slice(1))}</div><a class="text-link" href="${base(lang)}cv/">${t.fullCv} <span aria-hidden="true">↗</span></a></section>
   <section class="resume-section" id="skills"><div class="editorial-heading"><h2>${t.expertise}</h2></div><div class="expertise-grid">${skills.map(([, tools], i) => `<article class="expertise-panel expertise-${i}"><span class="expertise-index" aria-hidden="true">0${i + 1}</span><h3>${headings[i]}</h3><p>${tools}</p></article>`).join("")}</div></section>
   <section class="resume-section education-section"><div class="editorial-heading"><h2>${t.education}</h2></div><div class="education-grid">${c.schools.map(([dates, title, institution]) => `<article><p class="panel-label">${dates}</p><h3>${title}</h3><p>${institution}</p></article>`).join("")}</div></section>
   <section class="resume-section home-research" id="research"><div class="editorial-heading"><h2>${t.selected}</h2><p>${t.selectedNote}</p></div><div class="visual-work-grid">${studies.map((study, index) => `<article class="visual-work"><a href="${base(lang)}research/#${study.id}" class="work-cover work-cover-${index}" aria-label="${esc(study.title + " — " + study[lang].subtitle)}">${art(index)}<span class="cover-name">${study.title}</span></a><div class="work-caption"><h3><a href="${base(lang)}research/#${study.id}">${study.title}</a></h3><p>${study[lang].subtitle}</p><span>${study.first ? t.firstAuthor : t.coauthor}</span></div></article>`).join("")}</div><a class="text-link" href="${base(lang)}research/">${t.research} <span aria-hidden="true">↗</span></a></section>

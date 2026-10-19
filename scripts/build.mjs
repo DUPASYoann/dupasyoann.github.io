@@ -1,10 +1,11 @@
-import { mkdir, writeFile, copyFile, readFile } from "node:fs/promises";
+import { mkdir, writeFile, copyFile, readFile, cp } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { profile, publications, copy, skills } from "../site/content.mjs";
 import { researchCopy } from "../site/research.mjs";
-import { studyCards, researchPage } from "../site/research-components.mjs";
+import { researchPage } from "../site/research-components.mjs";
 import { cvFingerprint } from "../site/cv-fingerprint.mjs";
+import { cvHome } from "../site/cv-home.mjs";
 
 export const root = fileURLToPath(new URL("../", import.meta.url));
 export const out = path.join(root, "dist");
@@ -39,27 +40,6 @@ const url = (lang, page = "") => `${lang === "fr" ? "/fr/" : "/"}${page ? `${pag
 const external = (href, text, cls = "") => `<a class="${cls}" href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ${arrow}</a>`;
 const eyebrow = (text) => `<p class="eyebrow">${text}</p>`;
 
-function fusion() {
-  let points = "";
-  for (let i = 0; i < 115; i++) {
-    const a = i * 2.39996,
-      r = 12 + Math.sqrt(i) * 5.8;
-    const x = 252 + Math.cos(a) * r * 1.25,
-      y = 97 + Math.sin(a) * r * 0.83;
-    points += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i % 5 === 0 ? 2.6 : 1.7}" fill="${i % 3 === 0 ? "#b56a41" : "#6b7657"}" opacity="${0.3 + (i % 6) * 0.12}"/>`;
-  }
-  return `<svg class="fusion-svg" viewBox="0 0 390 190" role="img" aria-labelledby="fusion-title"><title id="fusion-title">RGB + IR + LiDAR → multimodal fusion</title><defs><pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M 12 0 L 0 0 0 12" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width=".5"/></pattern></defs><rect x="7" y="18" width="89" height="130" rx="4" fill="url(#grid)" stroke="currentColor" stroke-opacity=".18"/><rect x="27" y="33" width="89" height="130" rx="4" fill="url(#grid)" stroke="#b56a41" stroke-opacity=".65"/><rect x="47" y="48" width="89" height="130" rx="4" fill="url(#grid)" stroke="#6b7657" stroke-opacity=".8"/><path d="M144 95H172m-7-5 7 5-7 5" fill="none" stroke="currentColor" stroke-opacity=".5"/>${points}<text x="8" y="185" class="svg-label">RGB / IR / LiDAR</text><text x="224" y="185" class="svg-label">FUSION</text></svg>`;
-}
-
-function researchArt(index) {
-  const shapes = [
-    '<rect x="35" y="16" width="74" height="64" rx="3"/><rect x="55" y="32" width="74" height="64" rx="3"/><rect x="75" y="48" width="74" height="64" rx="3"/>',
-    '<path d="M40 35 95 20 150 35M40 35 95 64 150 35M40 35v60l55 25 55-25V35M95 64v56M40 65l55 26 55-26"/><circle cx="40" cy="35" r="5"/><circle cx="95" cy="20" r="5"/><circle cx="150" cy="35" r="5"/><circle cx="95" cy="64" r="5"/><circle cx="95" cy="120" r="5"/>',
-    '<circle cx="95" cy="67" r="43"/><ellipse cx="95" cy="67" rx="20" ry="43"/><ellipse cx="95" cy="67" rx="43" ry="17"/><path d="M95 10v114M38 67h114"/><circle cx="133" cy="45" r="5"/>',
-  ];
-  return `<svg viewBox="0 0 190 140" aria-hidden="true" class="research-art"><g fill="none" stroke="currentColor" stroke-width="1.2">${shapes[index]}</g></svg>`;
-}
-
 function publicationList(lang, items = publications, rich = true) {
   const c = copy[lang],
     r = researchCopy[lang];
@@ -72,16 +52,11 @@ function timeline(items) {
 
 function contact(lang) {
   const c = copy[lang];
-  return `<section class="contact-section" id="contact"><div>${eyebrow(c.contactEyebrow)}<h2>${c.contactTitle}</h2><p>${c.contactText}</p><a class="button button-dark" href="mailto:${profile.email}">${c.email} ${arrow}</a></div><div class="contact-links"><a class="email-link" href="mailto:${profile.email}">${profile.email}</a><button class="copy-email text-link" data-email="${profile.email}">${c.copyEmail} <span aria-hidden="true">＋</span></button><div class="social-links">${external(profile.linkedin, "LinkedIn")}${external(profile.github, "GitHub")}${external(profile.hal, "HAL")}${external(profile.scholar, "Scholar")}</div></div></section>`;
+  return `<section class="contact-section" id="contact"><div>${eyebrow(c.contactEyebrow)}<h2>${lang === "fr" ? "Échangeons." : "Let’s connect."}</h2><p>${c.contactText}</p><a class="button button-dark" href="mailto:${profile.email}">${c.email} ${arrow}</a></div><div class="contact-links"><a class="email-link" href="mailto:${profile.email}">${profile.email}</a><button class="copy-email text-link" data-email="${profile.email}">${c.copyEmail} <span aria-hidden="true">＋</span></button><div class="social-links">${external(profile.linkedin, "LinkedIn")}${external(profile.github, "GitHub")}${external(profile.hal, "HAL")}${external(profile.scholar, "Scholar")}</div></div></section>`;
 }
 
 function home(lang) {
-  const c = copy[lang];
-  return `<section class="hero" id="top"><div class="hero-copy">${eyebrow(c.eyebrow)}<h1>${c.hero}</h1><p class="hero-intro">${c.intro}</p><div class="hero-actions"><a class="button button-dark" href="#research">${c.explore} <span aria-hidden="true">↓</span></a><a class="text-link" href="${url(lang, "cv")}">${c.viewCv} ${arrow}</a></div><div class="current-position"><p class="eyebrow">${researchCopy[lang].current}</p><p>${researchCopy[lang].currentText}</p></div></div><aside class="hero-aside"><div class="portrait-frame"><img src="/assets/portrait.jpg" alt="${c.portrait}" width="524" height="516" fetchpriority="high"><span class="portrait-index" aria-hidden="true">YD / 01</span></div><p class="location"><span aria-hidden="true">⌖</span> ${c.location}</p><div class="fusion">${fusion()}<p>${c.caption}</p></div></aside><div class="hero-bottom"><span>${c.scroll}</span><span aria-hidden="true">↓</span><span>RGB + IR + LiDAR</span></div></section>
-  <section class="section research-section" id="research"><div class="section-heading"><div>${eyebrow(c.researchEyebrow)}<h2>${c.researchTitle}</h2></div><p>${c.researchIntro}</p></div><div class="research-grid">${c.research.map((r, i) => `<article class="research-card"><div class="research-card-top"><span class="card-index">0${i + 1}</span>${researchArt(i)}</div><p class="tagline">${r.tag}</p><h3>${r.title}</h3><p>${r.text}</p></article>`).join("")}</div><div class="thesis-banner"><span class="thesis-mark" aria-hidden="true">↗</span><div>${eyebrow(c.thesisLabel)}<h3>${c.thesisTitle}</h3><p>${c.thesisText}</p></div>${external(profile.thesis, c.thesisLink, "text-link")}</div></section>
-  <section class="section selected-studies"><div class="section-heading"><h2>${researchCopy[lang].studies}</h2><a class="text-link" href="${url(lang, "research")}">${researchCopy[lang].allStudies} ↗</a></div>${studyCards(lang)}</section><section class="section" id="publications"><div class="section-heading"><div>${eyebrow(c.pubEyebrow)}<h2>${c.pubTitle}</h2></div><a class="text-link" href="${url(lang, "publications")}">${c.allPubs} ${arrow}</a></div>${publicationList(lang, publications.filter((p) => p.type !== "thesis").slice(0, 3))}</section>
-  <section class="section experience-section" id="experience"><div class="experience-heading">${eyebrow(c.expEyebrow)}<h2>${c.expTitle}</h2><a class="text-link" href="${url(lang, "cv")}">${c.viewCv} ${arrow}</a></div>${timeline(c.jobs.slice(0, 3))}</section>
-  <section class="section about-section" id="about"><div class="mountain-art" aria-hidden="true"><svg viewBox="0 0 400 300"><path d="M0 260 90 120l65 92 87-164 158 212M45 260l94-120 88 120M176 173l66-125 60 105-37-17-21 21-22-27-19 41"/><circle cx="85" cy="60" r="22"/><path d="M0 278h400M0 290h400"/></svg><span>45°34′ N / 5°55′ E</span></div><div>${eyebrow(c.aboutEyebrow)}<h2>${c.aboutTitle}</h2><p>${c.aboutText}</p><ul class="hobbies">${c.hobbies.map((h) => `<li>${h}</li>`).join("")}</ul></div></section>${contact(lang)}`;
+  return cvHome(lang, { timeline, contact });
 }
 
 function papers(lang) {
@@ -106,7 +81,8 @@ function document(lang, page = "") {
     research: `${c.nav[0]} — Yoann Dupas`,
     404: `404 — Yoann Dupas`,
   };
-  const navTargets = [url(lang, "research"), url(lang, "publications"), url(lang, "cv"), `${homeUrl}#about`];
+  const navLabels = lang === "fr" ? ["À propos", "Parcours", "Publications", "Recherche"] : ["About", "Experience", "Publications", "Research"];
+  const navTargets = [`${homeUrl}#about`, url(lang, "cv"), url(lang, "publications"), url(lang, "research")];
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -120,7 +96,7 @@ function document(lang, page = "") {
     knowsAbout: ["Computer vision", "Deep learning", "Multimodal fusion"],
     alumniOf: [{ "@type": "CollegeOrUniversity", name: "Polytech Tours" }],
   };
-  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>${escape(titles[page])}</title><meta name="description" content="${escape(c.description)}"><link rel="canonical" href="${origin}${pageUrl}"><link rel="alternate" hreflang="en" href="${origin}${url("en", page)}"><link rel="alternate" hreflang="fr" href="${origin}${url("fr", page)}"><link rel="alternate" hreflang="x-default" href="${origin}${url("en", page)}"><meta property="og:type" content="website"><meta property="og:title" content="${escape(titles[page])}"><meta property="og:description" content="${escape(c.description)}"><meta property="og:url" content="${origin}${pageUrl}"><meta property="og:locale" content="${lang === "fr" ? "fr_FR" : "en_GB"}"><meta property="og:image" content="${origin}/assets/social-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#f6f5f0"><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/style.css"><script src="/assets/theme-init.js"></script><script src="/assets/app.js" defer></script><script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>${page === "404" ? '<meta name="robots" content="noindex">' : ""}</head><body data-page="${page || "home"}"><a class="skip-link" href="#main">${c.skip}</a><header class="site-header"><a class="wordmark" href="${homeUrl}" aria-label="Yoann Dupas — ${c.backHome}">yoann dupas<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="${lang === "fr" ? "Navigation principale" : "Main navigation"}">${c.nav.map((label, i) => `<a href="${navTargets[i]}"${(page === "research" && i === 0) || (page === "publications" && i === 1) || (page === "cv" && i === 2) ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav><div class="header-actions"><a class="language-switch" lang="${otherLang}" hreflang="${otherLang}" href="${url(otherLang, page === "404" ? "" : page)}" aria-label="${otherLang === "fr" ? "Version française" : "English version"}">${otherLang.toUpperCase()}</a><button class="theme-toggle icon-button" type="button" aria-label="${c.theme}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 5a7 7 0 0 1 0 14Z"/></svg></button><a class="header-contact" href="${homeUrl}#contact">${c.contact} ${arrow}</a><button class="menu-toggle icon-button" aria-label="${c.menu}" aria-expanded="false" aria-controls="main-nav" type="button"><span></span><span></span></button></div></header><main id="main">${page === "" ? home(lang) : page === "publications" ? papers(lang) : page === "cv" ? cv(lang) : page === "research" ? researchPage(lang) + contact(lang) : `<section class="page-intro not-found">${eyebrow("ERROR / 404")}<h1>${c.notFound}</h1><p>${c.notFoundText}</p><a href="${homeUrl}" class="button button-dark">${c.backHome} ${arrow}</a></section>`}</main><footer class="site-footer"><a class="wordmark" href="${homeUrl}">yoann dupas<span>.</span></a><p>${c.footer}</p><a href="#main" class="text-link">${c.backTop} ↑</a></footer><dialog id="citation-dialog" aria-labelledby="citation-title"><div class="dialog-heading"><h2 id="citation-title">${c.citation}</h2><button type="button" class="close-dialog icon-button" aria-label="${c.close}">×</button></div><pre id="citation-text" tabindex="0"></pre><button class="button button-dark copy-citation" type="button">${c.copy}</button><p class="copy-status" role="status" aria-live="polite"></p></dialog><div class="toast" role="status" aria-live="polite"></div><script type="application/json" id="citation-data">${JSON.stringify(Object.fromEntries(publications.map((p) => [p.id, bibtex(p)]))).replace(/</g, "\\u003c")}</script><script type="application/json" id="ui-data">${JSON.stringify({ copied: c.copied, copyFailed: c.copyFailed })}</script></body></html>`;
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>${escape(titles[page])}</title><meta name="description" content="${escape(c.description)}"><link rel="canonical" href="${origin}${pageUrl}"><link rel="alternate" hreflang="en" href="${origin}${url("en", page)}"><link rel="alternate" hreflang="fr" href="${origin}${url("fr", page)}"><link rel="alternate" hreflang="x-default" href="${origin}${url("en", page)}"><meta property="og:type" content="website"><meta property="og:title" content="${escape(titles[page])}"><meta property="og:description" content="${escape(c.description)}"><meta property="og:url" content="${origin}${pageUrl}"><meta property="og:locale" content="${lang === "fr" ? "fr_FR" : "en_GB"}"><meta property="og:image" content="${origin}/assets/social-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#ffffff"><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/style.css"><link rel="stylesheet" href="/assets/fonts.css" media="screen"><link rel="stylesheet" href="/assets/editorial.css" media="screen"><script src="/assets/theme-init.js"></script><script src="/assets/app.js" defer></script><script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>${page === "404" ? '<meta name="robots" content="noindex">' : ""}</head><body data-page="${page || "home"}"><a class="skip-link" href="#main">${c.skip}</a><header class="site-header"><a class="wordmark" href="${homeUrl}" aria-label="Yoann Dupas — ${c.backHome}">Yoann Dupas<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="${lang === "fr" ? "Navigation principale" : "Main navigation"}">${navLabels.map((label, i) => `<a href="${navTargets[i]}"${(page === "" && i === 0) || (page === "cv" && i === 1) || (page === "publications" && i === 2) || (page === "research" && i === 3) ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav><div class="header-actions"><a class="language-switch" lang="${otherLang}" hreflang="${otherLang}" href="${url(otherLang, page === "404" ? "" : page)}" aria-label="${otherLang === "fr" ? "Version française" : "English version"}">${otherLang.toUpperCase()}</a><button class="theme-toggle icon-button" type="button" aria-label="${c.theme}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 5a7 7 0 0 1 0 14Z"/></svg></button><a class="header-contact" href="${homeUrl}#contact">${c.contact} ${arrow}</a><button class="menu-toggle icon-button" aria-label="${c.menu}" aria-expanded="false" aria-controls="main-nav" type="button"><span></span><span></span></button></div></header><main id="main">${page === "" ? home(lang) : page === "publications" ? papers(lang) : page === "cv" ? cv(lang) : page === "research" ? researchPage(lang) + contact(lang) : `<section class="page-intro not-found">${eyebrow("ERROR / 404")}<h1>${c.notFound}</h1><p>${c.notFoundText}</p><a href="${homeUrl}" class="button button-dark">${c.backHome} ${arrow}</a></section>`}</main><footer class="site-footer"><a class="wordmark" href="${homeUrl}">Yoann Dupas<span>.</span></a><p>${c.footer}</p><a href="#main" class="text-link">${c.backTop} ↑</a></footer><dialog id="citation-dialog" aria-labelledby="citation-title"><div class="dialog-heading"><h2 id="citation-title">${c.citation}</h2><button type="button" class="close-dialog icon-button" aria-label="${c.close}">×</button></div><pre id="citation-text" tabindex="0"></pre><button class="button button-dark copy-citation" type="button">${c.copy}</button><p class="copy-status" role="status" aria-live="polite"></p></dialog><div class="toast" role="status" aria-live="polite"></div><script type="application/json" id="citation-data">${JSON.stringify(Object.fromEntries(publications.map((p) => [p.id, bibtex(p)]))).replace(/</g, "\\u003c")}</script><script type="application/json" id="ui-data">${JSON.stringify({ copied: c.copied, copyFailed: c.copyFailed })}</script></body></html>`;
 }
 
 export async function build() {
@@ -139,8 +115,9 @@ export async function build() {
       if (page !== "404") routes.push(route);
     }
   }
-  for (const file of ["style.css", "app.js", "theme-init.js", "favicon.svg", "social-card.png"])
+  for (const file of ["style.css", "editorial.css", "fonts.css", "app.js", "theme-init.js", "favicon.svg", "social-card.png"])
     await copyFile(path.join(root, "site", file), path.join(out, "assets", file));
+  await cp(path.join(root, "site/fonts"), path.join(out, "assets/fonts"), { recursive: true });
   if (!process.env.CV_EXPORT) {
     for (const lang of ["fr", "en"])
       await copyFile(path.join(root, "site/downloads", `yoann-dupas-cv-${lang}.pdf`), path.join(out, "assets", `yoann-dupas-cv-${lang}.pdf`));

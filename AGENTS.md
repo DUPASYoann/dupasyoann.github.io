@@ -11,6 +11,7 @@ The deployed site now uses the zero-runtime-dependency Node.js generator in `scr
 - `site/content.mjs` is the source of truth. Keep FR and EN in sync and use verified personal/publication facts.
 - Research summaries, primary source URLs and studies are in `site/research.mjs`. The sensor demo is explicitly educational, not model output. Keep that distinction visible.
 - After CV content changes, run `npm run cv:pdf` and review both bilingual PDFs. The build rejects stale PDF source hashes. Current employment and the corrected internship dates were confirmed directly by the user; do not add an unconfirmed LYNRED start date.
+- Homepage: `site/cv-home.mjs`. Screen styling: `site/editorial.css`, loaded after the component/print stylesheet. Keep `editorial.css` and `fonts.css` screen-only unless deliberately updating the PDF layout. Poppins, Urbanist and Kalam are self-hosted in `site/fonts/` with their OFL licenses; do not add CDN font requests.
 
 # Legacy Agent Guidelines for al-folio
 

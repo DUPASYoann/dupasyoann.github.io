@@ -51,7 +51,7 @@ try {
   await page.screenshot({ path: "test-results/home-mobile.png", fullPage: true });
   await page.locator(".menu-toggle").click();
   assert.equal(await page.locator(".menu-toggle").getAttribute("aria-expanded"), "true");
-  await page.locator("#main-nav a").nth(1).click();
+  await page.locator("#main-nav").getByRole("link", { name: "Publications", exact: true }).click();
   await page.waitForURL("**/fr/publications/");
   assert.equal(await page.locator(".menu-toggle").getAttribute("aria-expanded"), "false");
   report.interactions.push("mobile menu and navigation");

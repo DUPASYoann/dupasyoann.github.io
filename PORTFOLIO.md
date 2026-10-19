@@ -24,9 +24,12 @@ Pour les tests navigateur et d’accessibilité, laisser tourner la prévisualis
 ## Modifier le contenu
 
 - `site/content.mjs` : profil, liens, publications, expériences et textes anglais/français. C’est la source de vérité du nouveau site.
+- `site/cv-home.mjs` : accueil bilingue centré sur le CV, présentation personnelle, expérience actuelle, parcours, compétences et aperçus de recherche.
+- `site/editorial.css` : direction graphique à l’écran (fond blanc, signature bleue, typographies arrondies et blocs pastel). La référence visuelle est [le site de Kira Olson](https://www.kiraolson.com/) ; les contenus, la signature textuelle et les illustrations sont propres à ce portfolio.
+- `site/fonts.css` et `site/fonts/` : Poppins, Urbanist et Kalam, hébergées localement avec leurs licences SIL Open Font License. Aucun appel à Google Fonts n’est effectué par les visiteurs.
 - `site/research.mjs` : résumés éditoriaux, DOI et liens vérifiés, études de cas et textes de la démonstration.
 - `site/research-components.mjs` : schémas SVG originaux et composants de la page recherche.
-- `site/style.css` : design, responsive, thèmes clair/sombre et impression du CV.
+- `site/style.css` : fondations des composants et mise en page d’impression du CV. Les feuilles `editorial.css` et `fonts.css` sont limitées au média écran ; la refonte visuelle ne modifie pas les CV PDF existants.
 - `site/app.js` : navigation mobile, préférence de thème, recherche et filtres, citations et copie d’e-mail.
 - `scripts/build.mjs` : pages HTML, métadonnées, données structurées, sitemap, bibliographie et redirections.
 - `assets/img/photo_de_profil.jpg` : portrait original.

@@ -53,7 +53,9 @@ function employerLogos(org) {
       ? ["wisebim.png"]
       : org.startsWith("I3S")
         ? ["i3s.webp"]
-        : [];
+        : org.startsWith("LYNRED")
+          ? ["lynred.svg"]
+          : [];
   return logos.length
     ? `<div class="employer-logos" aria-hidden="true">${logos.map((file) => `<span class="employer-logo"><img src="/assets/logos/${file}" alt="" loading="lazy" width="80" height="56"></span>`).join("")}</div>`
     : "";

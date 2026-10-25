@@ -32,7 +32,15 @@ Pour les tests navigateur et d’accessibilité, laisser tourner la prévisualis
 - `site/style.css` : fondations des composants et mise en page d’impression du CV. Les feuilles `editorial.css` et `fonts.css` sont limitées au média écran ; la refonte visuelle ne modifie pas les CV PDF existants.
 - `site/app.js` : navigation mobile, préférence de thème, recherche et filtres, citations et copie d’e-mail.
 - `scripts/build.mjs` : pages HTML, métadonnées, données structurées, sitemap, bibliographie et redirections.
+- `site/seo.mjs` : titres et descriptions propres à chaque page et langue, graphe de données structurées (`ProfilePage`, `Person`, publications) et politique d’indexation. Les anciennes pages Recherche restent accessibles avec `noindex` et sont exclues du sitemap pendant leur refonte.
 - `assets/img/photo_de_profil.jpg` : portrait original.
+
+## Suivre le référencement
+
+Dans Google Search Console, ajouter ou sélectionner la propriété de type « Préfixe de l’URL » `https://dupasyoann.github.io/`, puis utiliser la méthode de vérification proposée par Google (fichier HTML ou balise fournie). Aucun identifiant de vérification ne doit être inventé. Une fois la propriété validée, soumettre `https://dupasyoann.github.io/sitemap.xml` dans « Sitemaps » et inspecter `/fr/`, `/fr/cv/` et `/fr/publications/` pour vérifier leur indexation. Les pages anglaises sont également dans le sitemap.
+
+Consulter ensuite les rapports d’indexation, de performances et de Core Web Vitals. Un audit Lighthouse mobile est une mesure de laboratoire ; il ne remplace pas les données réelles de visiteurs et ne garantit pas un classement dans Google. Ne pas bloquer les pages Recherche dans `robots.txt` : les moteurs doivent pouvoir lire leur balise `noindex`. Lors de leur remise en service, retirer cette exclusion dans `site/seo.mjs` et mettre à jour les tests du sitemap.
+
 - `site/social-card.png` : aperçu pour le partage sur les réseaux.
 
 Les cinq références bibliographiques du dépôt original sont conservées. Les métadonnées complémentaires et résumés sont dans `site/research.mjs`. Le générateur met à jour les deux langues et le fichier BibTeX, y compris les DOI. Les dates ont été corrigées avec les indications du propriétaire : stage de fin d’études WiseBIM de mars à août 2021, poste actuel d’ingénieur algorithme & IA en CDI chez LYNRED. Aucune date de début chez LYNRED n’est inventée : le parcours indique simplement « Aujourd’hui » / « Present ».

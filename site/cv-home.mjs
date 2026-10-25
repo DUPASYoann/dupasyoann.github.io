@@ -6,7 +6,7 @@ const base = (lang) => (lang === "fr" ? "/fr/" : "/");
 
 const text = {
   fr: {
-    hello: "Bonjour, moi c’est Yoann.",
+    hello: "Yoann Dupas — ingénieur algorithme & IA.",
     intro:
       "Je suis ingénieur algorithme & IA chez LYNRED, à Grenoble. J’associe vision par ordinateur, deep learning et perception multimodale pour mieux comprendre les images.",
     second:
@@ -39,7 +39,7 @@ const text = {
     contact: "Échangeons.",
   },
   en: {
-    hello: "Hello, I’m Yoann.",
+    hello: "Yoann Dupas — algorithm & AI engineer.",
     intro:
       "I’m an algorithm & AI engineer at LYNRED, based in Grenoble, France. I bring together computer vision, deep learning and multimodal perception to better understand images.",
     second: "My background connects doctoral research with applied engineering. Here you’ll find my experience, skills and publications.",
